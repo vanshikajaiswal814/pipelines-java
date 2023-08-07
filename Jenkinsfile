@@ -12,7 +12,6 @@ pipeline {
             agent {
                 dockerContainer {
                     image 'ubuntu'
-                    reuseNode true
                 }
             }
             steps {
