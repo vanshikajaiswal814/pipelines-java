@@ -10,7 +10,7 @@ pipeline {
          
         stage('Build') {
             agent {
-                docker {
+                dockerContainer {
                     image 'ubuntu'
                     reuseNode true
                 }
