@@ -39,7 +39,7 @@ pipeline {
                         path: '',
                         url: 'http://20.51.175.126:8088'
                     )],
-                    contextPath: 'servletjar',
+                    contextPath: 'servletjar11111',
                     onFailure: 'false',
                     war: '**/*.war'
             }
