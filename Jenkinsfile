@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-                dockerContainer {
-                    image 'ubuntu'
-                }
-            }
+    agent any
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -12,13 +8,19 @@ pipeline {
 
     stages {
          
-        stage('Build') {
+        stage('Checkout') {
             
             steps {
                 // Get some code from a GitHub repository
                 git branch: 'main',
                     url: 'https://gitlab.com/nravinuthala/pipelines-java.git'
 
+             }
+        }
+
+        stage ('Build') {
+
+            steps {
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
@@ -26,6 +28,9 @@ pipeline {
                 // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
 
+        }
+
+        stage ('Deploy') {
             post {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
