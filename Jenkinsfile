@@ -21,7 +21,9 @@ pipeline {
         stage('Verify') {
             
             steps {
-                sh "mvn verify sonar:sonar -Dsonar.projectKey=nravinuthala_pipelines-java_AYob7vqrC0mdZlzzBssl"
+                sh "mvn verify sonar:sonar 
+                    -Dsonar.host.url=http://20.172.200.178:9000
+                    -Dsonar.projectKey=nravinuthala_pipelines-java_AYob7vqrC0mdZlzzBssl"
 
              }
         }
