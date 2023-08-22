@@ -23,8 +23,8 @@ pipeline {
             steps {
                 sh "mvn verify sonar:sonar \
                     -Dsonar.host.url=http://20.172.200.178:9000 \
-                    -Dsonar.projectKey=nravinuthala_pipelines-java_AYob7vqrC0mdZlzzBssl" \
-                    -Dsonar.login=sqp_9c73bbe5db7c59de59e599d196f98b7e510ad7b5
+                    -Dsonar.projectKey=nravinuthala_pipelines-java_AYob7vqrC0mdZlzzBssl \
+                    -Dsonar.login=sqp_9c73bbe5db7c59de59e599d196f98b7e510ad7b5"
 
              }
         }
