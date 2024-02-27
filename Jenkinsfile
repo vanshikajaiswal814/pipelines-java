@@ -17,6 +17,7 @@ pipeline {
 
             steps {
                 // Run Maven on a Unix agent.
+                sh "mvn surefire-report:report"
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
 
                 // To run Maven on a Windows agent, use
