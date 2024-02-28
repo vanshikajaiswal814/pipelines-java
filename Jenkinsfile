@@ -13,18 +13,6 @@ pipeline {
              }
         }
 
-        stage ('Test') {
-
-            steps {
-                // Run Maven on a Unix agent.
-                sh "mvn surefire-report:report"
-                
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
-            }
-
-        }
-
         stage ('Build') {
 
             steps {
@@ -36,5 +24,21 @@ pipeline {
             }
 
         }
+
+        stage ('Deploy') {
+
+            steps {
+                echo "deploy stage"
+                deploy adapters: [tomcat9 (
+                        credentialsId: 'tomcat_deployer',
+                        path: '',
+                        url: 'http://172.172.47.147:8088/'
+                    )],
+                    contextPath: 'test',
+                    onFailure: 'false',
+                    war: '**/*.war'
+            }
+        }
+
     }
 }
