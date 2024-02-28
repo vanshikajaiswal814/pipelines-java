@@ -48,12 +48,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>3.2.5</version>
-         <configuration>
-          <aggregate>true</aggregate>
-          <!--also set this to link to generated source reports-->
-          <linkXRef>true</linkXRef>
-          <outputDirectory>${basedir}/target/newsite</outputDirectory>
-      </configuration>
       </plugin>
     </plugins>
   </reporting>
