@@ -24,18 +24,10 @@ pipeline {
             }
 
         }
-            stage ('Deploy') {
+            stage ('email config') {
 
         steps {
-            echo "deploy stage"
-            deploy adapters: [tomcat9 (
-                    credentialsId: '12345',
-                    path: '',
-                    url: 'http://localhost:8088/'
-                )],
-                contextPath: 'test',
-                onFailure: 'false',
-                war: '**/*.war'
+                mail bcc: '', body: 'mail from jenkins', cc: '', from: '', replyTo: '', subject: 'jenkins email', to: 'vanshikajaiswalvns@gmail.com'
         }
     }
 
