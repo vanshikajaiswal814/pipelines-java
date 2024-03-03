@@ -46,7 +46,7 @@ pipeline {
                         path: '',
                         url: 'http://20.62.99.46:8080/'
                     )],
-                    contextPath: 'servletjar11111',
+                    contextPath: 'helloworld-app',
                     onFailure: 'false',
                     war: '**/*.war'
             }
