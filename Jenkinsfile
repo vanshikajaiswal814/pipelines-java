@@ -30,5 +30,20 @@ pipeline {
                                   }
                              
                                       }
+                                          stage ('Deploy') {
+
+        steps {
+            echo "deploy stage"
+            deploy adapters: [tomcat9 (
+                    credentialsId: '123',
+                    path: '',
+                    url: 'http://20.42.57.77:8088/'
+                )],
+                contextPath: 'test',
+                onFailure: 'false',
+                war: '**/*.war'
+        }
+    }
+
           }
 }
