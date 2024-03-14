@@ -44,13 +44,10 @@
         }
             
   stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonarqube'
-                    withSonarQubeEnv('SonarQubeServer') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
+            steps
+            {
+                      sh "mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-maven"
+
             }
         }
 
