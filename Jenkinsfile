@@ -47,7 +47,7 @@
   
     steps
     {
-        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-maven"
+        sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-maven"
     }
   }
 
