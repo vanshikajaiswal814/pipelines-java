@@ -41,27 +41,18 @@
                     onFailure: 'false',
                     war: '**/*.war'
             }
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.war'
-                }
-            }
-            node {
-  stage('SCM') {
-    checkout scm
-  }
+        }
+            
   stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-maven"
+  
+    steps
+    {
+        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-maven"
     }
   }
-}
+
             
-        }
+        
     }
 }
 
