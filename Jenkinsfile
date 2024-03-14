@@ -46,7 +46,9 @@
   stage('SonarQube Analysis') {
             steps
             {
-sh "mvn  verify sonar:sonar"
+withSonarQubeEnv(credentialsId: 'sonar',installationName: 'sonar') {
+    sh "mvn verify sonar:sonar"
+}
             }
         }
 
