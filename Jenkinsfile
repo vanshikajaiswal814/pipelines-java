@@ -33,7 +33,7 @@
             steps {
                 echo "deploy stage"
                 deploy adapters: [tomcat9 (
-                        credentialsId: '123',
+                        credentialsId: 'tomcat',
                         path: '',
                         url: 'http://20.83.163.227:8088/'
                     )],
