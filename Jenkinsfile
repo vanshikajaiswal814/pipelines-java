@@ -21,6 +21,12 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+                branch 'development'
+                expression {
+                    return env.BRANCH_NAME == 'development'
+                }
+            }
             steps {
                 echo "deploy stage"
                 deploy adapters: [tomcat9(
@@ -31,13 +37,6 @@ pipeline {
                     contextPath: 'text',
                     onFailure: 'false',
                     war: '**/*.war'
-            }
-        }
-
-        when {
-            branch 'development'
-            expression {
-                return env.BRANCH_NAME == 'development'
             }
         }
 
