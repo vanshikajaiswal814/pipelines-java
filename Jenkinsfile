@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Get the code from the GitLab repository
-                git branch: 'development',
+                git branch: 'main',
                     url: 'https://gitlab.com/Vanshika90/pipelines-java.git'
             }
         }
@@ -26,9 +26,9 @@ pipeline {
 
         stage('Install') {
             when {
-                branch 'development'
+                branch 'develop'
                 expression {
-                    return env.BRANCH_NAME == 'development'
+                    return env.BRANCH_NAME == 'develop'
                 }
             }
             steps {
@@ -46,7 +46,18 @@ pipeline {
             }
             steps {
                 // Deploy the war file to Tomcat
-                sh 'docker run --rm -v $PWD:/app -v jenkins-maven-repo:/root/.m2 -w /app tomcat:latest cp target/ROOT.war /usr/local/tomcat/webapps/'
+                
+                echo "deploy stage"
+                deploy adapters: [tomcat9(
+                        credentialsId: 'tomcat',
+                        path: '',
+                        url: 'http://20.83.163.227:8088/'
+                    )],
+                    contextPath: 'text',
+                    onFailure: 'false',
+                    war: '**/*.war'
+            
+                
             }
         }
     }
