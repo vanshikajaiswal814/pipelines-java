@@ -35,7 +35,7 @@
                 deploy adapters: [tomcat9 (
                         credentialsId: '123',
                         path: '',
-                        url: 'http://20.42.57.77:8088/'
+                        url: 'http://20.83.163.227:8088/'
                     )],
                     contextPath: 'text',
                     onFailure: 'false',
@@ -43,13 +43,22 @@
             }
         }
             
-  stage('SonarQube Analysis') {
-            steps
-            {
-withSonarQubeEnv(credentialsId: 'sonar',installationName: 'sonar') {
-    sh "mvn verify sonar:sonar"
-}
-            }
+  when {
+              branch 'development'
+                      expression {
+                                      return env.BRANCH_NAME == 'development'
+                      }
+  }
+
+      stage('Install') {
+                  steps {
+                                  sh 'mvn install'
+                  }
+      }
+                  }
+      }
+                      }
+  }
         }
 
             
