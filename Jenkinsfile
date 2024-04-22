@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'tomcatdocker'
+        DOCKER_IMAGE_NAME = 'jaiswal234/tomcatdocker'
         
     }
 
