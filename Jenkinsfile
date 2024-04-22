@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'jaiswal234/tomcat-docker'
+        DOCKER_IMAGE_NAME = 'jaiswal234/tomcatdocker'
         DOCKER_IMAGE_TAG = '${env.BUILD_NUMBER}'
     }
 
