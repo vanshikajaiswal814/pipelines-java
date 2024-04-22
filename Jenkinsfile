@@ -11,6 +11,12 @@ pipeline {
         }
 
         stage('Build') {
+            environment {
+                DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+                DOCKER_IMAGE_NAME = 'tomcat-docker'
+                DOCKER_HUB_USERNAME = 'jaiswal234'
+                DOCKER_HUB_PASSWORD = 'Vanshika123'
+            }
             steps {
                 // Run Maven to build the project
                 sh 'mvn clean package'
@@ -22,13 +28,6 @@ pipeline {
                 // Run the tests
                 sh 'mvn test'
             }
-        }
-
-        environment {
-            DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
-            DOCKER_IMAGE_NAME = 'tomcat-docker'
-            DOCKER_HUB_USERNAME = 'jaiswal234'
-            DOCKER_HUB_PASSWORD = 'Vanshika123'
         }
 
         stage('Build Docker Image') {
