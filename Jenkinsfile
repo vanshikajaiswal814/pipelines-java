@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'jaiswal234/tomcatdocker'
-        DOCKER_IMAGE_TAG = '${env.BUILD_NUMBER}'
+        DOCKER_IMAGE_NAME = 'tomcatdocker'
+        
     }
 
     stages {
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'docker-hub-credentials') {
-                        docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                     }
                 }
             }
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
