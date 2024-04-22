@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'jaiswal234/tomcat-docker:12'
+        DOCKER_IMAGE_NAME = 'jaiswal234/tomcat-docker'
+        DOCKER_IMAGE_TAG = '${env.BUILD_NUMBER}'
     }
 
     stages {
@@ -15,9 +16,6 @@ pipeline {
         }
 
         stage('Build') {
-            environment {
-                DOCKER_IMAGE_NAME = 'tomcat-docker'
-            }
             steps {
                 // Run Maven to build the project
                 sh 'mvn clean package'
@@ -32,22 +30,20 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            
             steps {
                 script {
                     docker.withRegistry('', 'docker-hub-credentials') {
-                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                        docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
                     }
                 }
             }
         }
 
         stage('Push to Docker Hub') {
-            
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
