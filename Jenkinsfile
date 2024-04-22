@@ -48,11 +48,6 @@ pipeline {
                     }
 
                 }
-                #script {
-                #    docker.withRegistry('https://index.docker.io/v1/jaiswal234', 'docker-hub-credentials') {
-                #        docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                #    }
-                #}
             }
         }
     }
