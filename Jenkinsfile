@@ -39,7 +39,7 @@ pipeline {
         stage('Push to Docker Hub') {
     steps {
         script {
-            withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS', usernameVariable: 'jaiswal234', passwordVariable: 'Vanshika123')]) {
                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
                     docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                 }
