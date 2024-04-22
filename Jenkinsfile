@@ -29,7 +29,7 @@ pipeline {
 
         stage('Build Docker Image') {
             when {
-                success('Build')
+                expression { currentBuild.result == 'SUCCESS' }
             }
             steps {
                 script {
@@ -42,7 +42,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             when {
-                success('Build Docker Image')
+                expression { currentBuild.result == 'SUCCESS' }
             }
             steps {
                 script {
