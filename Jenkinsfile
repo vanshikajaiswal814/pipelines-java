@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE_NAME = 'tomcat-docker'
+    }
+
     stages {
         stage('Checkout') {
             steps {
