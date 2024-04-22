@@ -23,42 +23,34 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
-        stage('Install') {
-            when {
-                branch 'develop'
-                expression {
-                    return env.BRANCH_NAME == 'develop'
-                }
-            }
-            steps {
-                // Install the built artifacts to the local Maven repository
-                sh 'mvn install'
-            }
+        environment {
+                    DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
+                    DOCKER_IMAGE_NAME = 'your-docker-image-name'
+                    DOCKER_HUB_USERNAME = 'your-docker-hub-username'
+                    DOCKER_HUB_PASSWORD = 'your-docker-hub-password'
         }
-
-        stage('Deploy') {
-            when {
-                branch 'main'
-                expression {
-                    return env.BRANCH_NAME == 'main'
+        stage('Build Docker Image') {
+                        steps {
+                                script {
+                                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                                }
+                        }
+        }
+        stage('Push to Docker Hub') {
+    steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CREDENTIALS', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                    docker.image("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                 }
-            }
-            steps {
-                // Deploy the war file to Tomcat
-                
-                echo "deploy stage"
-                deploy adapters: [tomcat9(
-                        credentialsId: 'tomcat',
-                        path: '',
-                        url: 'http://20.83.163.227:8088/'
-                    )],
-                    contextPath: 'text',
-                    onFailure: 'false',
-                    war: '**/*.war'
-            
-                
             }
         }
     }
+}                                          
+                            
+
+        
+            
+             
+    
 }
