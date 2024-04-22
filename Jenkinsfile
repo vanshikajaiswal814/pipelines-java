@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'tomcat-docker'
+        DOCKER_IMAGE_NAME = 'jaiswal234/tomcat-docker:12'
     }
 
     stages {
