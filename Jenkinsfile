@@ -28,9 +28,7 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            when {
-                expression { currentBuild.result == 'SUCCESS' }
-            }
+            
             steps {
                 script {
                     docker.withRegistry('', 'docker-hub-credentials') {
@@ -41,9 +39,7 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
-            when {
-                expression { currentBuild.result == 'SUCCESS' }
-            }
+            
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
