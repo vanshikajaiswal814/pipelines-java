@@ -59,20 +59,7 @@ stage('Push to Docker Hub') {
             }
         }
 
-        stage ('Deploy') {
-
-            steps {
-                echo "deploy stage"
-                deploy adapters: [tomcat9 (
-                        credentialsId: 'tomcat_deploy_ui',
-                        path: '',
-                        url: 'http://20.62.99.46:8080/'
-                    )],
-                    contextPath: 'helloworld-app',
-                    onFailure: 'false',
-                    war: '**/*.war'
-            }
-        }
+        
     }
 }
 
