@@ -15,10 +15,26 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage ('Test') {
+
             steps {
-                // Run Maven to build the project
-		sh 'mvn clean package'
+                // Run Maven on a Unix agent.
+                sh "mvn surefire-report:report"
+            
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+
+        }
+
+        stage ('Build') {
+
+            steps {
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true package"
+
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
 
@@ -40,6 +56,21 @@ stage('Push to Docker Hub') {
                     }
 
                 }
+            }
+        }
+
+        stage ('Deploy') {
+
+            steps {
+                echo "deploy stage"
+                deploy adapters: [tomcat9 (
+                        credentialsId: 'tomcat_deploy_ui',
+                        path: '',
+                        url: 'http://20.62.99.46:8080/'
+                    )],
+                    contextPath: 'helloworld-app',
+                    onFailure: 'false',
+                    war: '**/*.war'
             }
         }
     }
