@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = 'jaiswal234/tomcatdocker'
+        
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Get the code from the GitLab repository
+                git branch: 'main',
+                    url: 'https://gitlab.com/Vanshika90/pipelines-java.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Run Maven to build the project
+		sh 'mvn clean package'
+            }
+        }
+
+stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', 'docker-hub-credentials') {
+                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    }
+                }
+            }
+        }
+stage('Push to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                        sh "docker push ${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+
