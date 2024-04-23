@@ -28,6 +28,15 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', 'docker-hub-credentials') {
+                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    }
+                }
+            }
+        }
 
         
 
