@@ -51,7 +51,9 @@ stage('Push to ACR') {
             steps {
                 script {
                     docker.withRegistry("https://vanshikacon.azurecr.io", 'acr-credentials') {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                        // docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                        sh "az acr login --name vanshikacon"
+                        sh "docker push vanshikacon.azurecr.io/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                     }
                 }
             }
