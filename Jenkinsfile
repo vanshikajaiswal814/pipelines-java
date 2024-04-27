@@ -41,7 +41,7 @@ pipeline {
 stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', 'docker-hub-credentials') {
+                    docker.withRegistry('https://vanshikacon.azurecr.io', 'acr-credentials') {
                         docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
                     }
                 }
@@ -50,7 +50,7 @@ stage('Build Docker Image') {
 stage('Push to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'acr-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                         sh "docker push ${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                     }
