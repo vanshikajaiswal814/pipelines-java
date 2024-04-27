@@ -56,7 +56,7 @@ stage('Push to ACR') {
                 }
             }
         }
-    }
+    
         
     }
 }
