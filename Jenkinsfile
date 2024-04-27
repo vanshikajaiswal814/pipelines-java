@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'jaiswal234/tomcatdocker'
+        DOCKER_IMAGE_NAME = 'tomcatdocker'
         
     }
 
@@ -47,18 +47,16 @@ stage('Build Docker Image') {
                 }
             }
         }
-stage('Push to Docker Hub') {
+stage('Push to ACR') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'acr-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                        sh "docker push ${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    docker.withRegistry("https://${REGISTRY}", 'acr-credentials') {
+                        docker.image("https://vanshikacon.azurecr.io/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
-
                 }
             }
         }
-
+    }
         
     }
 }
