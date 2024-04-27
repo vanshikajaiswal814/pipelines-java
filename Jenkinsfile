@@ -50,8 +50,8 @@ stage('Build Docker Image') {
 stage('Push to ACR') {
             steps {
                 script {
-                    docker.withRegistry("https://${REGISTRY}", 'acr-credentials') {
-                        docker.image("https://vanshikacon.azurecr.io/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+                    docker.withRegistry("https://vanshikacon.azurecr.io", 'acr-credentials') {
+                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
