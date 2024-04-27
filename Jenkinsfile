@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'tomcatdocker'
-        
+        ACR_NAME = 'vanshikacon'
+        ACR_URL = "${ACR_NAME}.azurecr.io"
     }
 
     stages {
@@ -15,52 +16,36 @@ pipeline {
             }
         }
 
-        stage ('Test') {
-
+        stage('Test') {
             steps {
                 // Run Maven on a Unix agent.
                 sh "mvn test"
-            
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-
         }
 
-        stage ('Build') {
-
+        stage('Build') {
             steps {
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
-
-                // To run Maven on a Windows agent, use
-                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
         }
 
-stage('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://vanshikacon.azurecr.io', 'acr-credentials') {
-                        docker.build("${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    docker.build("${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push to ACR') {
+            steps {
+                script {
+                    docker.withRegistry("https://${ACR_URL}", 'acr-credentials') {
+                        docker.image("${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
         }
-stage('Push to ACR') {
-            steps {
-                script {
-                    docker.withRegistry("https://vanshikacon.azurecr.io", 'acr-credentials') {
-                        // docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                        sh "az acr login --name vanshikacon"
-                        sh "docker push vanshikacon.azurecr.io/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
-                    }
-                }
-            }
-        }
-    
-        
     }
 }
-
-
