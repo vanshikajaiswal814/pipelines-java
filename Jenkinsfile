@@ -47,7 +47,9 @@ pipeline {
         stage('Pull Trivy Image') {
     steps {
         script {
-            docker.image('aquasec/trivy:latest').pull()
+            docker.withRegistry("https://registry.hub.docker.com", 'docker-hub-credentials') {
+                docker.image('aquasec/trivy:latest').pull()
+            }
         }
     }
 }
