@@ -37,6 +37,13 @@ pipeline {
                 }
             }
         }
+        stage('Pull Trivy Image') {
+    steps {
+        script {
+            docker.image('aquasec/trivy:latest').pull()
+        }
+    }
+}
         stage('Scan Docker Image') {
     steps {
         script {
