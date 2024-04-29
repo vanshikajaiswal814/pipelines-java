@@ -41,7 +41,7 @@ pipeline {
     steps {
         script {
             def trivyScan = docker.image('aquasec/trivy:latest').inside("--security-opt seccomp=unconfined") {
-                sh "trivy ${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                sh "trivy image ${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
             }
             if (trivyScan.exitStatus != 0) {
                 error "Security scan failed. Please check the vulnerabilities."
