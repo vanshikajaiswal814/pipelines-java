@@ -13,15 +13,7 @@ pipeline {
         ACR_NAME = 'vanshikacon'
         ACR_URL = "${ACR_NAME}.azurecr.io"
     }
-    stage('Install Maven') {
-            steps {
-                script {
-                    docker.image('jenkins/agent:latest').inside("--user root") {
-                        sh "apt-get update && apt-get install -y maven"
-                    }
-                }
-            }
-        }
+    
 
 
     stages {
@@ -30,6 +22,15 @@ pipeline {
                 // Get the code from the GitLab repository
                 git branch: 'main',
                     url: 'https://gitlab.com/Vanshika90/pipelines-java.git'
+            }
+        }
+        stage('Install Maven') {
+            steps {
+                script {
+                    docker.image('jenkins/agent:latest').inside("--user root") {
+                        sh "apt-get update && apt-get install -y maven"
+                    }
+                }
             }
         }
 
