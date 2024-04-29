@@ -1,12 +1,6 @@
 pipeline {
 
- agent {
-        docker {
-            image 'jenkins/agent:latest'
-            args '-v /tmp:/tmp'
-        }
-    }
-
+ agent any
 
     environment {
         DOCKER_IMAGE_NAME = 'tomcatdocker'
@@ -24,15 +18,7 @@ pipeline {
                     url: 'https://gitlab.com/Vanshika90/pipelines-java.git'
             }
         }
-        stage('Install Maven') {
-            steps {
-                script {
-                    docker.image('jenkins/agent:latest').inside("--user root") {
-                        sh "apt-get update && apt-get install -y maven"
-                    }
-                }
-            }
-        }
+       
 
         stage('Test') {
             steps {
