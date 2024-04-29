@@ -1,6 +1,11 @@
 pipeline {
 
- agent any
+ agent {
+        docker {
+            image 'jenkins/agent:latest'
+            args '-v /tmp:/tmp'
+        }
+    }
 
     environment {
         DOCKER_IMAGE_NAME = 'tomcatdocker'
