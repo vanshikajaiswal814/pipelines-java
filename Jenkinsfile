@@ -2,7 +2,7 @@ pipeline {
 
  agent {
         docker {
-            image 'jenkins/agent:latest'
+            image 'maven:3.8.7-openjdk-11'
             args '-v /tmp:/tmp'
         }
     }
