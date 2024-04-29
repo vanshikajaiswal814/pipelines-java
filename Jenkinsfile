@@ -2,7 +2,7 @@ pipeline {
 
  agent {
         docker {
-            image 'maven:3.8.7-openjdk-11'
+            image 'jenkins/agent:latest'
             args '-v /tmp:/tmp'
         }
     }
@@ -13,6 +13,16 @@ pipeline {
         ACR_NAME = 'vanshikacon'
         ACR_URL = "${ACR_NAME}.azurecr.io"
     }
+    stage('Install Maven') {
+            steps {
+                script {
+                    docker.image('jenkins/agent:latest').inside("--user root") {
+                        sh "apt-get update && apt-get install -y maven"
+                    }
+                }
+            }
+        }
+
 
     stages {
         stage('Checkout') {
