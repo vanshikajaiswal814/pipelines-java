@@ -53,7 +53,7 @@ pipeline {
         stage('Scan Docker Image') {
     steps {
         script {
-            def trivyScan = docker.image('aquasec/trivy:latest').inside("--security-opt seccomp=unconfined --entrypoint=''") {
+            def trivyScan = docker.image('aquasec/trivy:latest').inside(" -u root --security-opt seccomp=unconfined --entrypoint=''") {
                 sh "trivy image ${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
             }
             if (trivyScan.exitStatus != 0) {
