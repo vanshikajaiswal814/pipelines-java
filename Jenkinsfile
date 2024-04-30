@@ -56,7 +56,7 @@ pipeline {
             def trivyImage = docker.image('aquasec/trivy:latest')
             trivyImage.pull()
             trivyImage.inside("-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''") {
-                sh "trivy image ${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                sh "trivy image --cache-dir /tmp/trivy_cache ${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}"
             }
         }
     }
