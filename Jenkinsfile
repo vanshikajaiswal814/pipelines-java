@@ -37,7 +37,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    docker.build("${ACR_URL}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}", '--privileged')
                 }
             }
         }
