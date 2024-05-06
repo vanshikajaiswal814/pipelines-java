@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - my-app-deployment.yaml
 - my-app-service.yaml
+- my-app-secret.yaml
